@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <title>NASA API</title>
+    <meta charset="utf-8"/>
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous">
+    </script>
+    <script>
+        function getSkyscape() {
+            request = new XMLHttpRequest();
+ 
+            request.open("GET", "https://api.nasa.gov/planetary/apod?date=2016-02-26&hd=false&api_key=cs7p89eDJBscJGfklWLftp3KfNAKcXT4bcAXiXHT", true);
+
+            request.onreadystatechange = function() {
+                if (request.readyState == 4 && request.status == 200) {
+                    result = request.responseText;
+                    skyscape = JSON.parse(result);
+
+                    document.write("<img id='NASAPhoto' src='" + skyscape.hdurl + "'</img>");
+                    $("#NASAPhoto").css("width", "40%");
+                    $("#NASAPhoto").css("display", "block");
+                    $("#NASAPhoto").css("margin-left", "auto");
+                    $("#NASAPhoto").css("margin-right", "auto");
+
+                    document.write("<h1 id='NASATitle'>" + skyscape.title + "</h1>");
+                    $("#NASATitle").css("font-family", "Verdana");
+                    $("#NASATitle").css("padding", "10px");
+                    $("#NASATitle").css("text-align", "center");
+
+                    document.write("<div id='NASADate'>" + skyscape.date + "</div>");
+                    $("#NASADate").css("font-family", "Verdana");
+                    $("#NASADate").css("padding", "10px");
+                    $("#NASADate").css("background-color", "rgba(144, 12, 63, 0.3)");
+
+                    document.write("<div id='NASAExplanation'>" + skyscape.explanation + "</div>");
+                    $("#NASAExplanation").css("font-family", "Verdana");
+                    $("#NASAExplanation").css("padding", "10px");
+                    $("#NASAExplanation").css("background-color", "rgba(144, 12, 63, 0.3)");
+
+                    document.write("<div id='APIDiscussion'>");
+                    document.write("<ul>");
+                        document.write("<li>The API I chose is NASA's Astronomy Picture of the Day. It gives the user a cool image as well as a description of the image.</li>");
+                        document.write("<li>I found the API on: https://api.nasa.gov/</li>");
+                        document.write("<li>Options: I used my birthday as the date of the photo, my own API key, and I chose not to use a high-resolution image because it took longer to load.</li>");
+                        document.write("<li>One could use it as part of an educational website to teach students about space. Another use for it could be to get pictures for a blog.</li>");
+                    document.write("<ul>");
+                    document.write("</div>");
+                }
+                else if (request.readyState == 4 && request.status != 200) {
+                    document.getElementById("messages").innerHTML = "Oops.. Something went wrong!";
+                }
+                else if (request.readyState == 3) {
+                    document.getElementById("messages").innerHTML = "Not ready! Try again";
+                }
+            }
+            request.send();
+        }
+    </script>
+    <style> 
+
+    </style>
+</head>
+
+
+<body onload="getSkyscape()">
+    <div id="messages">Loading...</div>
+</body>
+</html>
